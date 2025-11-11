@@ -10,6 +10,32 @@ from pages.LoginPage import LoginPage
 from utilities import ReadConfigurations
 from utilities.wait_helpers import wait_for_element
 
+"""
+import pytest
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+import os
+
+@pytest.fixture(scope="session")
+def driver():
+    download_dir = os.path.join(os.getcwd(), "downloads")
+    os.makedirs(download_dir, exist_ok=True)
+
+    chrome_options = Options()
+    prefs = {
+        "download.default_directory": download_dir,
+        "download.prompt_for_download": False,
+        "download.directory_upgrade": True,
+        "safebrowsing.enabled": True
+    }
+    chrome_options.add_experimental_option("prefs", prefs)
+
+    driver = webdriver.Chrome(options=chrome_options)
+    driver.maximize_window()
+    yield driver, download_dir
+    driver.quit()
+"""
+
 # Helper function to initialize the driver
 def initialize_driver():
     browser = ReadConfigurations.read_configuration("browser and url", "browser")

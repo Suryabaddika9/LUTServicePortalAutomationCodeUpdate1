@@ -122,7 +122,7 @@ def setup_and_teardown_login(request):
 
 
 
-
+"""
 
 from faker import Faker
 def test_faker():
@@ -136,3 +136,43 @@ def test_faker_indian():
     fake = Faker('en_IN')  # For Indian names, addresses, etc.
     print(fake.name())
     print(fake.phone_number())
+    
+   """
+#for chrome
+
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+
+# Set download directory
+download_dir = "/path/to/download"
+
+chrome_options = Options()
+prefs = {
+    "download.default_directory": download_dir,  # Set download folder
+    "download.prompt_for_download": False,       # Disable download prompt
+    "download.directory_upgrade": True,
+    "safebrowsing.enabled": True                # Avoid security blocks
+}
+chrome_options.add_experimental_option("prefs", prefs)
+
+# Initialize driver
+service = Service("/path/to/chromedriver")
+driver = webdriver.Chrome(service=service, options=chrome_options)
+
+#for firefox
+
+from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
+
+download_dir = "/path/to/download"
+
+options = Options()
+profile = webdriver.FirefoxProfile()
+profile.set_preference("browser.download.folderList", 2)  # Use custom folder
+profile.set_preference("browser.download.dir", download_dir)
+profile.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/pdf,application/octet-stream")  # MIME types
+profile.set_preference("pdfjs.disabled", True)  # Disable PDF viewer
+
+driver = webdriver.Firefox(firefox_profile=profile, options=options)
+driver.get("https://example.com/file.pdf")
