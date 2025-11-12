@@ -36,26 +36,29 @@ class TestLUTServicePortalVirtualTerminal:
         virtual_terminal_page = VirtualTerminalPage(self.driver)
         virtual_terminal_page.verify_virtual_terminal_header_is_displayed()
         virtual_terminal_page.enter_amount_into_sale_amount("123")
+        #virtual_terminal_page.enter_amount_into_custom_tip_field("1")
         virtual_terminal_page.enter_pin_into_virtual_pin_input_field("5175961962")
         # Open OTP generator in a new tab
         self.driver.execute_script("window.open('https://totp.danhersam.com/', '_blank');")
         self.driver.switch_to.window(self.driver.window_handles[-1])
         wait_for_element(self.driver, By.CSS_SELECTOR, "h1.title", timeout=10, condition="visible")
-        secret_key = self.driver.find_element(By.CSS_SELECTOR,"input[placeholder='The secret key (in base-32 format)']")
+        secret_key = self.driver.find_element(By.XPATH,"//input[@placeholder='The secret key (in base-32 format)']")
         secret_key.clear()
         secret_key.send_keys("GUYTONJZGYYTSNRS")
-        time_out = self.driver.find_element(By.CSS_SELECTOR, "input[placeholder='Usually 30']")
-        time_out.clear()
+        time_out = self.driver.find_element(By.XPATH, "//input[@placeholder='Usually 30']")
+
+        time.sleep(2)
         time_out.send_keys("60")
         time.sleep(2)  # Wait for OTP to generate
         otp = self.driver.find_element(By.ID, "token").text
         # Switch back to Virtual Terminal tab
-        self.driver.close()
+        self.driver.back()
         self.driver.switch_to.window(main_window)
         # Re-initialize page object if needed
         virtual_terminal_page = VirtualTerminalPage(self.driver)
         virtual_terminal_page.enter_pin_into_virtual_pin_input_field(otp)
         # Wait and click submit
+        time.sleep(2)
         virtual_terminal_page.scroll_and_click_VT_submit_button()
         transaction_page = TransactionPage(self.driver)
         assert transaction_page.verify_transaction_success_msg_is_displayed()

@@ -14,7 +14,7 @@ def scroll_and_click_button(driver, by_type, locator, timeout=20):
     """
     try:
         # Wait for the button to be visible
-        button = wait_for_element(driver, by_type, locator, timeout=timeout, condition="visible")
+        button = wait_for_element(driver, by_type, locator, timeout=timeout, condition="clickable")
 
         # Scroll into view
         driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", button)
